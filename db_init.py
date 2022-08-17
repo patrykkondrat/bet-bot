@@ -12,12 +12,11 @@ Base = declarative_base()
 
 class Bets(Base):
     __tablename__ = 'bets'
-    id = Column(Integer, Sequence('id_seq'), primary_key=True)
-    user = Column(String)
+    user = Column(String, primary_key=True)
     bet = Column(String)
 
     def __repr__(self):
-        return "<Bets(id='%i', user='%s', bet='%s')>" % (self.id, self.user, self.bet)
+        return "<Bets(user='%s', bet='%s')>" % ( self.user, self.bet)
 
 class Teams(Base):
     __tablename__ = "teams"

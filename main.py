@@ -1,6 +1,7 @@
 import nextcord
 from nextcord.ext import tasks, commands
 from dotenv import load_dotenv
+from db_service import make_bet
 
 '''
 ctx.author - kto napisał
@@ -24,7 +25,19 @@ async def on_ready():
 
 @bot.slash_command(name="hello", description="Welcome")
 async def hello(interaction: nextcord.Interaction):
-    await interaction.send("Cześć! Miłej zabawy ;)")
+    await interaction.send("CHi! Have a great game ;)")
+
+@bot.command()
+async def bet(ctx, _bet):
+    print("================ Some one trying to make a bet =================")
+    try:
+        make_bet(str(ctx.author), _bet)
+        await ctx.send(f"You bet on {_bet}. Good luck!")
+        print(f"{ctx.author} made a bet succesfully")
+    except:
+        await ctx.send("Something goes wrong with you bet, {ctx.author} :(")
+        print(f"{str(ctx.author)} try to bet but something failed")
+
 
 # @bot.command()
 # async def add_host(ctx, name_of_host):

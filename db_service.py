@@ -15,9 +15,9 @@ def change_bet(_user, _bet):
     session.query(Bets).filter(Bets.user == _user).update({Bets.bet: _bet})
     session.commit()
 
-def make_bet(user_id, _user, _bet):
+def make_bet( _user, _bet):
     try:
-        ins = Bets(id=user_id, user=_user, bet=_bet)
+        ins = Bets(user=_user, bet=_bet)
         session.add(ins)
         session.commit()
     except IntegrityError:
@@ -39,6 +39,6 @@ def show_table(plot=True) -> List:
     return out
 
 if __name__ == "__main__":
-    make_bet(5, "Dorota5", '2')
+    make_bet("Dorota6", '2')
     change_bet("Dorota5", "1")
     print(show_table(0))
