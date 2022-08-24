@@ -1,10 +1,10 @@
+from datetime import datetime
 import os
 
 from sqlalchemy import Column, Integer, String, create_engine, Sequence
 from sqlalchemy.orm import declarative_base
 
-count = 0
-path_to_db = os.path.dirname(os.path.realpath(__file__)) + f"/bets_{count}/"
+path_to_db = os.path.dirname(os.path.realpath(__file__)) + f"/bets_{datetime.date(datetime.today())}/"
 engine = create_engine(f'sqlite:////{path_to_db}')
 
 Base = declarative_base()
@@ -20,8 +20,10 @@ class Bets(Base):
 
 class Teams(Base):
     __tablename__ = "teams"
-    game_id = Column(Integer, primary_key=True)
+    _id = Column(Integer, primary_key=True)
+    host_id = Column(Integer)
     host = Column(String)
+    guest_id = Column(Integer)
     guest = Column(String)
         
 
