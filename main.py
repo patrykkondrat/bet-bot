@@ -56,10 +56,10 @@ async def sethost(ctx, host_name):
 async def setguest(ctx, guest_name):
     try:
         teamserv.set_guest_team(guest_name)        
-        await ctx.send(f"{guest_name} is set as host team.")
-        print(f"Host: {guest_name}")
+        await ctx.send(f"{guest_name} is set as guest team.")
+        print(f"Guest: {guest_name}")
     except:
-        print("Wrong host")
+        print("Wrong guest")
         await ctx.send(f"Something goes wrong")
 
 @bot.command()
@@ -72,10 +72,13 @@ async def showbets(ctx):
     await ctx.send(betserv.show_table(1))
 
 @bot.command()
-async def test(ctx, arg):
-    await ctx.send(arg)
-
-
-
+async def help(ctx, arg):
+    await ctx.send("""
+    !sethost "hostname" -> set a host team for your challenge
+    !setguest "guestname" -> set a guest team for your challenge
+    !bet "teamname" -> make a bet
+    !showinfo -> show all of the bets
+    !setwinner -> set a winner of your challenge
+    """)
 
 bot.run(TESTING_GUILD_ID)

@@ -41,7 +41,7 @@ class TeamServices:
     
     def set_host_team(self, _host_name):
         try:
-            ins = Teams(host=_host_name)
+            ins = Teams(_id=1, host=_host_name)
             session.add(ins)
             session.commit()
         except:
@@ -49,7 +49,7 @@ class TeamServices:
     
     def set_guest_team(self, _guest_name):
         try:
-            ins = Teams(guest=_guest_name)
+            ins = Teams(_id=1, guest=_guest_name)
             session.add(ins)
             session.commit()
         except:
