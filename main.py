@@ -1,15 +1,7 @@
-'''
-ctx.author - kto napisał
-ctx.guild - jakiej uzył komendy
-ctx.send() - informacja na chat
-ctx.messege - informacja z czatu
-'''
-
 import nextcord
 from nextcord.ext import tasks, commands
 from dotenv import load_dotenv
-from db_service import BetServices, TeamServices
-
+from db_service import BetServices, TeamServices, is_valid_bet
 
 
 betserv = BetServices()
@@ -35,6 +27,7 @@ async def hello(interaction: nextcord.Interaction):
 async def bet(ctx, _bet):
     print("================ Someone trying to make a bet =================")
     try:
+        if not is_valid_bet(_bet): return ctx.send("Team unavailable")
         betserv.make_bet(str(ctx.author), _bet)
         await ctx.send(f"{ctx.author} bet on {_bet}. Good luck!")
         print(f"{ctx.author} made a bet succesfully")
@@ -72,13 +65,7 @@ async def showbets(ctx):
     await ctx.send(betserv.show_table(1))
 
 @bot.command()
-async def help(ctx, arg):
-    await ctx.send("""
-    !sethost "hostname" -> set a host team for your challenge
-    !setguest "guestname" -> set a guest team for your challenge
-    !bet "teamname" -> make a bet
-    !showinfo -> show all of the bets
-    !setwinner -> set a winner of your challenge
-    """)
+async def helpdesk(ctx):
+    await ctx.send('!sethost "hostname" -> set a host team for your challenge\n!setguest "guestname" -> set a guest team for your challenge\n!bet "teamname" -> make a bet\n!showinfo -> show all of the bets\n!setwinner -> set a winner of your challenge')
 
 bot.run(TESTING_GUILD_ID)
