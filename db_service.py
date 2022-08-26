@@ -45,6 +45,7 @@ class TeamServices:
         self.host: str = ""
         self.guest_id = 2
         self.guest: str = ""
+    
 
     def push(self):
         session.rollback()
@@ -54,26 +55,28 @@ class TeamServices:
 
     def set_host_team(self, _host_name):
         self.host = _host_name
-        session.rollback()
-        print(_host_name)
-        if self.guest != "" and self.host != "":
+        try:
+            session.rollback()
+            if self.guest != "" and self.host != "":
+                self.push()
+            else:
+                print("bez pushu")
+        except:
             self.push()
-        else:
-            print("bez pushu")
 
     def set_guest_team(self, _guest_name):
         self.guest = _guest_name
-        session.rollback()
-        print(_guest_name)
-        if self.guest != "" and self.host != "":
+        try:
+            session.rollback()
+            if self.guest != "" and self.host != "":
+                self.push()
+            else:
+                print("bez pushu")
+        except:
             self.push()
-        else:
-            print("bez pushu")
     
     def show_teams(self) -> None:
         pass
-
-
 
 if __name__ == "__main__":
     team = TeamServices()
