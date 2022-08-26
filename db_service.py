@@ -38,35 +38,45 @@ class BetServices:
             print(table)
         return table
 
-class TeamServices:
-    _teams: dict = {"host_id": 1, "host_name": "", "guest_id": 2, "guest_name": "" }
-    
+class TeamServices: 
+    def __init__(self):   
+        self.id = 1
+        self.host_id = 1
+        self.host: str = ""
+        self.guest_id = 2
+        self.guest: str = ""
+
+    def push(self):
+        session.rollback()
+        ins = Teams(_id=self.id, host_id=self.host_id, host=self.host, guest_id=self.guest_id, guest=self.guest)
+        session.add(ins)
+        session.commit()
+
     def set_host_team(self, _host_name):
-        try:
-            ins = Teams(_id=1, host=_host_name)
-            session.add(ins)
-            session.commit()
-        except:
-            print("lipa")
-    
+        self.host = _host_name
+        session.rollback()
+        print(_host_name)
+        if self.guest != "" and self.host != "":
+            self.push()
+        else:
+            print("bez pushu")
+
     def set_guest_team(self, _guest_name):
-        try:
-            ins = Teams(_id=1, guest=_guest_name)
-            session.add(ins)
-            session.commit()
-        except:
-            print("lipa")
+        self.guest = _guest_name
+        session.rollback()
+        print(_guest_name)
+        if self.guest != "" and self.host != "":
+            self.push()
+        else:
+            print("bez pushu")
+    
+    def show_teams(self) -> None:
+        pass
+
 
 
 if __name__ == "__main__":
-    print("True:")
-    print(is_valid_bet("siemanko"))
-    print(is_valid_bet("halko"))
-    print(is_valid_bet(1))
-    print(is_valid_bet(2))
-    print()
-    print("False:")
-    print(is_valid_bet("elko"))
-    print(is_valid_bet("mordo"))
-    print(is_valid_bet(3))
-    print(is_valid_bet(2841902))
+    team = TeamServices()
+    team.set_host_team("siema")
+    team.set_guest_team("siemanko")
+
