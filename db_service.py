@@ -58,7 +58,6 @@ class TeamServices:
             session.rollback()            
             # session.query(Teams).filter(Teams._id == self.id).delete()
             # ins = Teams(_id=self.id, host_id=self.host_id, host=self.host, guest_id=self.guest_id, guest=self.guest)
-            # session.add(ins)
         finally:
             session.commit()
 
