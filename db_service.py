@@ -42,15 +42,14 @@ class BetServices:
 
 class TeamServices: 
     def __init__(self):   
-        self.id = 1
-        self.host_id = 1
+        self.id: int = 1
+        self.host_id: int = 1
         self.host: str = ""
-        self.guest_id = 2
+        self.guest_id: int = 2
         self.guest: str = ""
-        self.winner = ""
+        self.winner: str = ""
 
     def push(self):
-        
         try:
             ins = Teams(_id=self.id, host_id=self.host_id, host=self.host, guest_id=self.guest_id, guest=self.guest)
             session.add(ins)
@@ -60,7 +59,6 @@ class TeamServices:
             # ins = Teams(_id=self.id, host_id=self.host_id, host=self.host, guest_id=self.guest_id, guest=self.guest)
         finally:
             session.commit()
-
 
     def set_host_team(self, _host_name):
         self.host = _host_name
