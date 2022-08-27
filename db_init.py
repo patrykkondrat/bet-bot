@@ -19,7 +19,7 @@ class Bets(Base):
         return "<Bets(user='%s', bet='%s')>" % ( self.user, self.bet)
 
 class Teams(Base):
-    __tablename__ = "teams"
+    __tablename__ = 'teams'
     _id = Column(Integer, primary_key=True)
     host_id = Column(Integer)
     host = Column(String)

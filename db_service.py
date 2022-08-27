@@ -1,10 +1,12 @@
 from typing import List
-from db_init import engine, Bets, Teams
+
 from sqlalchemy import or_
-from sqlalchemy.sql import select, update, exists
-from sqlalchemy.orm import sessionmaker
-from tabulate import tabulate
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.sql import exists, select, update, delete
+from tabulate import tabulate
+
+from db_init import Bets, Teams, engine
 
 Session = sessionmaker(bind=engine)
 session = Session()
@@ -45,41 +47,51 @@ class TeamServices:
         self.host: str = ""
         self.guest_id = 2
         self.guest: str = ""
-    
+        self.winner = ""
 
     def push(self):
-        session.rollback()
-        ins = Teams(_id=self.id, host_id=self.host_id, host=self.host, guest_id=self.guest_id, guest=self.guest)
-        session.add(ins)
-        session.commit()
+        
+        try:
+            ins = Teams(_id=self.id, host_id=self.host_id, host=self.host, guest_id=self.guest_id, guest=self.guest)
+            session.add(ins)
+        except:
+            session.rollback()            
+            # session.query(Teams).filter(Teams._id == self.id).delete()
+            # ins = Teams(_id=self.id, host_id=self.host_id, host=self.host, guest_id=self.guest_id, guest=self.guest)
+            # session.add(ins)
+        finally:
+            session.commit()
+
 
     def set_host_team(self, _host_name):
         self.host = _host_name
-        try:
-            session.rollback()
-            if self.guest != "" and self.host != "":
-                self.push()
-            else:
-                print("bez pushu")
-        except:
+        if self.guest != "" and self.host != "":
+            self.id += 1
             self.push()
 
     def set_guest_team(self, _guest_name):
         self.guest = _guest_name
-        try:
-            session.rollback()
-            if self.guest != "" and self.host != "":
-                self.push()
-            else:
-                print("bez pushu")
-        except:
+        if self.guest != "" and self.host != "":
+            self.id += 1
             self.push()
-    
-    def show_teams(self) -> None:
-        pass
+
+    def set_winner(self, winner):
+        self.winner = winner
+
+    def show_teams(self, plot=True) -> None:
+        con = engine.connect()
+        res = con.execute(select(Teams))
+        out = []
+        for i in res:
+            out.append(list(i))
+        table = tabulate(out, headers=Bets.__table__.columns.keys(), tablefmt="fancy_grid", showindex="never")
+        if plot == True:
+            print(table)
+        return table
 
 if __name__ == "__main__":
     team = TeamServices()
     team.set_host_team("siema")
     team.set_guest_team("siemanko")
+    team.set_host_team("kolsiemankoo")
 
