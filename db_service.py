@@ -85,10 +85,3 @@ class TeamServices:
         if plot == True:
             print(table)
         return table
-
-if __name__ == "__main__":
-    team = TeamServices()
-    team.set_host_team("siema")
-    team.set_guest_team("siemanko")
-    team.set_host_team("kolsiemankoo")
-
